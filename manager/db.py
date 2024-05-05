@@ -41,6 +41,20 @@ def init_db_command():
     click.echo("Initialized the database")
 
 
+def insert_example_dataset():
+    db = get_db()
+
+    with current_app.open_resource("example.sql") as ef:
+        db.execute(ef.read(), multi=True)
+
+
+@click.command('insert-examples')
+def init_db_examples():
+    insert_example_dataset()
+    click.echo("Examples inserted")
+
+
 def init_app(app):
     app.teardown_appcontext(close_db)
     app.cli.add_command(init_db_command)
+    app.cli.add_command(init_db_examples)
