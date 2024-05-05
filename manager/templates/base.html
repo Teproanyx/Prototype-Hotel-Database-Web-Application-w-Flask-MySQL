@@ -8,6 +8,10 @@
 </head>
 
 <body>
+    <header>
+        {% block header %}Default Header{% endblock header %}
+    </header>
+
     <nav>
         {% block nav %}
         <ul>
@@ -16,8 +20,13 @@
         {% endblock nav %}
     </nav>
 
-    {% block content %}{% endblock content %}
-</body>
+    {% for message in get_flash_messages() %}
+    <div class="flash">{{ message }}</div>
+    {% endfor %}
 
+    <section class="content">
+        {% block content %}{% endblock content %}
+    </section>
+</body>
 
 </html>
