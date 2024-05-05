@@ -1,6 +1,8 @@
 from flask import Blueprint, request, redirect, url_for, flash, render_template
 from mysql.connector import IntegrityError
 
+from werkzeug.security import  generate_password_hash
+
 from .db import get_db
 
 bp = Blueprint("auth", __name__, url_prefix="/auth")
@@ -38,7 +40,8 @@ def register():
                 db.execute(f'''INSERT INTO Guest 
                            (FirstName, LastName, Phone, Email, Username, GuestPassword) 
                            VALUES 
-                           ({firstname}, {lastname}, {phone}, {email}, {username}, {password})''')
+                           ({firstname}, {lastname}, {phone}, {email}, {username}, 
+                           {generate_password_hash(password)})''')
             except IntegrityError:
                 err = f"{username} is already registered."
             else:
