@@ -96,6 +96,7 @@ def logout():
     session.clear()
     return redirect(url_for('room'))
 
+
 def require_login(view):
     @functools.wraps(view)
     def decorated_view(**kwargs):
