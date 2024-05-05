@@ -3,6 +3,7 @@
 Using Flask backend with a MySQL database to implement a basic CRUD web application
 
 ## Instruction For Running This Server
+
 1. Download Python 3.12, and all dependencies
 2. Download MySQL, remember your root password
 3. Download this codebase
@@ -17,5 +18,5 @@ Using Flask backend with a MySQL database to implement a basic CRUD web applicat
     },
     "SECRET_KEY": [PUT IN ANY VALID STRING, JUST KEEP IT SECRET]
 }`
-7. In the root folder of project, run flask `--app manager init-db` followed by `flask --app manager run`
+7. In the root folder of project, run flask `--app manager init-db` followed by `flask --app manager ins-example` followed by `flask --app manager run`
 8. Check your localhost; profit
