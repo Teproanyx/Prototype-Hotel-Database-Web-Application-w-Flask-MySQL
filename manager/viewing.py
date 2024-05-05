@@ -7,7 +7,7 @@ bp = Blueprint("viewing", __name__)
 @bp.route('/')
 def room():
     db = get_db()
-    info_header = ("RoomNumber", "RoomName", r"Price/Night" ,"Detail", "Cleaning Staff")
+    info_header = ("RoomNumber", "RoomName", r"Price/Night", "Detail", "Cleaning Staff")
     
     db.execute(f'''
                SELECT RoomNumber, RoomName, PricePerNight, Detail, FirstName
@@ -20,4 +20,10 @@ def room():
 
 @bp.route('/staff')
 def staff():
-    pass
+    db = get_db()
+    info_header = ("Staff ID", "First Name", "Last Name", "Phone", "Email")
+    
+    db.execute(f"SELECT Staff ID, First Name, Last Name, Phone, Email FROM Staff")
+    
+    return render_template("viewing/viewtable.html", title="Staffs", headers=info_header, 
+                           table=db.fetchall())
