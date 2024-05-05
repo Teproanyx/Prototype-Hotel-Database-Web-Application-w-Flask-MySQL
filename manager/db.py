@@ -48,7 +48,7 @@ def insert_example_dataset():
         db.execute(ef.read(), multi=True)
 
 
-@click.command('insert-examples')
+@click.command('ins-example')
 def init_db_examples():
     insert_example_dataset()
     click.echo("Examples inserted")
