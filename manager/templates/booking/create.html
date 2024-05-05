@@ -1,0 +1,16 @@
+{% extends "nav.html" %}
+
+{% block header %}
+<h1>{% block title %}New Booking{% endblock title %}</h1>
+{% endblock header %}
+
+{% block content %}
+<form method="post">
+    <label for="roomNo">Room Number</label>
+    <input type="number" name="roomNo" id="roomNo" required autofocus>
+    <label for="checkIn">Check In Date</label>
+    <input type="date" name="checkIn" id="checkIn" required>
+    <label for="checkOut">Check Out Date</label>
+    <input type="date" name="checkOut" id="checkOut" required>
+</form>
+{% endblock content %}
