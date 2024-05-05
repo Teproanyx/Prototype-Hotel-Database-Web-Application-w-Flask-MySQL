@@ -37,11 +37,13 @@ def register():
         
         if err is not None:
             try:
-                db.execute(f'''INSERT INTO Guest 
+                db.execute(f'''
+                           INSERT INTO Guest 
                            (FirstName, LastName, Phone, Email, Username, GuestPassword) 
                            VALUES 
                            ({firstname}, {lastname}, {phone}, {email}, {username}, 
-                           {generate_password_hash(password)})''')
+                           {generate_password_hash(password)})
+                           ''')
             except IntegrityError:
                 err = f"{username} is already registered."
             else:
