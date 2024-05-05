@@ -89,3 +89,8 @@ def cached_login_user():
         cursor = get_db()
         cursor.execute(f"SELECT Username, GuestPassword FROM Guest WHERE Username = {u_id}")
         g.user = cursor.fetchone()
+
+@bp.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('room'))
