@@ -108,3 +108,44 @@ def require_login(view):
         return view(**kwargs)
     
     return decorated_view
+
+
+@bp.route('/edit', methods=('GET', 'POST'))
+@require_login
+def edit():
+    db = get_db()
+    username = g.user[0]
+    db.execute(f"SELECT FirstName, LastName, Phone, Email FROM Guest WHERE Username = {username}")
+    original = db.fetchone()
+
+    if request.method == "POST":
+        firstname = request.form['firstname']
+        lastname = request.form['lastname']
+        phone = request.form['phoneno']
+        email = request.form['email']
+        
+
+        err = None
+
+        if not firstname:
+            err = "First Name is required"
+        elif not lastname:
+            err = "Last Name is required"
+        elif not phone:
+            err = "Phone number is required"
+        elif not email:
+            err = "Email is required"
+        elif not phone.isnumeric():
+            err = "Phone number needs to be a number"
+
+        if err is not None:
+            db.execute(f'''
+                        UPDATE Guest SET FirstName = {firstname},
+                        LastName = {lastname}, Phone = {phone}, Email = {email}
+                        WHERE Username = {username}
+                        ''')
+            return redirect(url_for('booking.index'))
+
+        flash(err)
+
+    return render_template('auth/edit.html', orig=original)

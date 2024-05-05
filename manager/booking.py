@@ -22,7 +22,6 @@ def create():
         roomNo = request.form['roomNo']
         checkIn = request.form['checkIn']
         checkOut = request.form['checkOut']
-        guestId = g.user[0]
         err = None
 
         roomNo, checkIn, checkOut = validateAndTransform(roomNo, checkIn, checkOut)
@@ -44,6 +43,9 @@ def create():
         
 
         if err is None:
+            db.execute(f"SELECT GuestID FROM Guest WHERE Username = {g.user[0]}")
+            guestId = db.fetchone()[0]
+
             db.execute(f'''
                        SELECT PricePerNight FROM Room NATURAL JOIN RoomType 
                        WHERE RoomNumber = {roomNo}
@@ -71,9 +73,12 @@ def get_booking(id):
 
     booking = db.fetchone()
 
+    db.execute(f"SELECT GuestID FROM Guest WHERE USERNAME = {g.user[0]}")
+    gid = db.fetchone()[0]
+
     if booking is None:
         abort(404, "Booking does not exist")
-    elif booking[1] != g.user[0]:
+    elif booking[1] != gid:
         abort(403)
     
     return booking
