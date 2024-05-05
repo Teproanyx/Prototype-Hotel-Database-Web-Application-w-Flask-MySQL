@@ -58,7 +58,7 @@ def create():
                        ({guestId}, {roomNo}, {checkIn}, {checkOut}, {price})
                        ''')
 
-            return redirect('booking/index.html')
+            return redirect(url_for('booking/index.html'))
 
         flash(err)
 
@@ -79,7 +79,7 @@ def get_booking(id):
     return booking
 
 
-@bp.route('/<int:id>/update', methods=('GET', 'POST'))
+@bp.route('/update/<int:id>', methods=('GET', 'POST'))
 @require_login
 def update(id):
     booking = get_booking(id)
@@ -125,7 +125,7 @@ def update(id):
                        WHERE BookingID = {booking[0]}
                        ''')
 
-            return redirect('booking/index.html')
+            return redirect(url_for('booking/index.html'))
 
         flash(err)
 
@@ -148,3 +148,14 @@ def validateAndTransform(roomNo, checkIn, checkOut):
     except ValueError:
         err = "Date input error; try again"
     return roomNo,checkIn,checkOut
+
+
+@bp.route('/cancel/<int:id>', methods=('POST'))
+@require_login
+def cancel(id):
+    get_booking(id)
+
+    db = get_db()
+    db.execute(f"DELETE FROM Booking WHERE BookingID = {id}")
+    
+    return redirect(url_for('booking/index.html'))

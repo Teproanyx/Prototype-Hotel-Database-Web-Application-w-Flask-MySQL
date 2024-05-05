@@ -12,5 +12,9 @@
     <input type="date" name="checkIn" id="checkIn" value="{{ original_booking[3] }}" required>
     <label for="checkOut">Check Out Date</label>
     <input type="date" name="checkOut" id="checkOut" value="{{ original_booking[4] }}" required>
+    <input class="b_action" type="submit" value="Save">
+</form>
+<form action="{{ url_for('booking.cancel', id=original_booking[0]) }}" method="post">
+    <input class="cancel" type="submit" value="Cancel" onclick="return confirm('Are you sure?');">
 </form>
 {% endblock content %}
