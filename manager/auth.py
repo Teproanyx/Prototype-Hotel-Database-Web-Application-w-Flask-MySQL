@@ -1,7 +1,7 @@
 from flask import Blueprint, request, redirect, url_for, flash, render_template, session, g
 from mysql.connector import IntegrityError
-
 from werkzeug.security import  generate_password_hash, check_password_hash
+import functools
 
 from .db import get_db
 
@@ -90,7 +90,18 @@ def cached_login_user():
         cursor.execute(f"SELECT Username, GuestPassword FROM Guest WHERE Username = {u_id}")
         g.user = cursor.fetchone()
 
+
 @bp.route('/logout')
 def logout():
     session.clear()
     return redirect(url_for('room'))
+
+def require_login(view):
+    @functools.wraps(view)
+    def decorated_view(**kwargs):
+        if g.user is None:
+            return redirect(url_for('auth.login'))
+        
+        return view(**kwargs)
+    
+    return decorated_view
