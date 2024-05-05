@@ -35,5 +35,6 @@ def create_app(test_config=None):
     app.register_blueprint(booking.bp)
 
     app.register_blueprint(viewing.bp)
+    app.add_url_rule('/', endpoint='room')
 
     return app
