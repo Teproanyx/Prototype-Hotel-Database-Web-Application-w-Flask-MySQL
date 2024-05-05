@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}HotelDB{% endblock title %}</title>
+    <link rel="stylesheet" href="{{ urlfor('static', filename='style.css') }}">
+</head>
+
+<body>
+    <nav>
+        {% block nav %}
+        <ul>
+            <li>Implement Navigation bar</li>
+        </ul>
+        {% endblock nav %}
+    </nav>
+
+    {% block content %}{% endblock content %}
+</body>
+
+
+</html>
