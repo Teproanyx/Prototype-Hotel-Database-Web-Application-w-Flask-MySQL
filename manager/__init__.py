@@ -2,7 +2,7 @@ import os
 import json
 from flask import Flask
 
-import db, auth
+from . import db, auth
 
 
 def create_app(test_config=None):
