@@ -1,4 +1,4 @@
-from flask import Blueprint, request, redirect, url_for, flash, render_template, session
+from flask import Blueprint, request, redirect, url_for, flash, render_template, session, g
 from mysql.connector import IntegrityError
 
 from werkzeug.security import  generate_password_hash, check_password_hash
@@ -71,9 +71,21 @@ def login():
 
         if error is None:
             session.clear()
-            session['user_id'] = user[0]
+            session['u_id'] = user[0]
             return redirect(url_for('room'))
         
         flash(error)
 
     return render_template('auth/login.html')
+
+
+@bp.before_app_request
+def cached_login_user():
+    u_id = session.get(u_id)
+
+    if u_id is None:
+        g.user = None
+    else:
+        cursor = get_db()
+        cursor.execute(f"SELECT Username, GuestPassword FROM Guest WHERE Username = {u_id}")
+        g.user = cursor.fetchone()
