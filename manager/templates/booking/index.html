@@ -1,0 +1,32 @@
+{% extends "nav.html" %}
+
+{% block header %}
+<h1>{% block title %}Bookings{% endblock title %}</h1>
+{% if g.user %}
+<a class="b_action" href="{{ url_for('booking.create') }}">Book</a>
+{% endif %}
+{% endblock header %}
+
+{% block content %}
+<table>
+    <tr>
+        <th>Booking ID</th>
+        <th>Room</th>
+        <th>Check In</th>
+        <th>Check Out</th>
+    </tr>
+    {% for booking in bookings %}
+    <tr>
+        {% for data in booking %}
+        {% if not loop.last %}
+        <td>{{ data }}</td>
+        {% else %}
+        {% if data == g.user[0] %}
+        <a class="b_action" href="{{ url_for('booking.edit', id=booking[0]) }}">Edit</a>
+        {% endif %}
+        {% endif %}
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+{% endblock content %}
