@@ -1,0 +1,22 @@
+{% extends "nav.html" %}
+
+{% block header %}
+<h1>{% block title %}Bookings{% endblock title %}</h1>
+{% endblock header %}
+
+{% block content %}
+<table>
+    <tr>
+        <th>Room</th>
+        <th>Check In</th>
+        <th>Check Out</th>
+    </tr>
+    {% for booking in bookings %}
+    <tr>
+        {% for data in booking %}
+        <td>{{ data }}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+{% endblock content %}
