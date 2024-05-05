@@ -1,0 +1,22 @@
+{% extends "nav.html" %}
+
+{% block header %}
+<h1>{% block title %}{{ title }}{% endblock title %}</h1>
+{% endblock header %}
+
+{% block content %}
+<table>
+    <tr>
+        {% for table_header in headers %}
+        <th>{{ table_header }}</th>
+        {% endfor %}
+    </tr>
+    {% for row in table %}
+    <tr>
+        {% for col in row %}
+        <td>{{ col }}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+{% endblock content %}
