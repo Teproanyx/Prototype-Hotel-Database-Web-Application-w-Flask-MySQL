@@ -81,7 +81,7 @@ def login():
 
 @bp.before_app_request
 def cached_login_user():
-    u_id = session.get(u_id)
+    u_id = session.get('u_id')
 
     if u_id is None:
         g.user = None
