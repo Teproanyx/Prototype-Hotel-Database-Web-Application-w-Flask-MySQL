@@ -155,7 +155,7 @@ def validateAndTransform(roomNo, checkIn, checkOut):
     return roomNo,checkIn,checkOut
 
 
-@bp.route('/cancel/<int:id>', methods=('POST'))
+@bp.route('/cancel/<int:id>', methods=('POST',))
 @require_login
 def cancel(id):
     get_booking(id)
