@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect, render_template, url_for
+from flask import Blueprint, render_template
 
 from .db import get_db
 
@@ -7,10 +7,10 @@ bp = Blueprint("viewing", __name__)
 @bp.route('/')
 def room():
     db = get_db()
-    info_header = ("RoomNumber", "RoomName", r"Price/Night", "Detail", "Cleaning Staff")
+    info_header = ("RoomNumber", "RoomName", r"Price/Night", "Details", "Cleaning Staff")
     
     db.execute(f'''
-               SELECT RoomNumber, RoomName, PricePerNight, Detail, FirstName
+               SELECT RoomNumber, RoomName, PricePerNight, Details, FirstName
                FROM Room NATURAL JOIN RoomType NATURAL JOIN Staff
                ''')
     
