@@ -28,28 +28,29 @@ def create():
 
         err, roomNo, checkIn, checkOut, catererID = validateAndTransform(roomNo, checkIn, checkOut, catererID)
         
-        db = get_db()
+        if err is None:
+            db = get_db()
 
-        db.execute(f"SELECT * FROM Room WHERE RoomNumber = {roomNo}")
+            db.execute(f"SELECT * FROM Room WHERE RoomNumber = {roomNo}")
 
-        if db.fetchone() is None:
-            err = "Room number invalid"
-        else:
-            db.execute(f"SELECT CheckInDate, CheckOutDate FROM Booking WHERE RoomNumber = {roomNo}")
-
-            for dateRange in db:
-                if (dateRange[0] > checkIn and dateRange[0] < checkOut) or (
-                    dateRange[1] > checkIn and dateRange[1] < checkOut):
-                    err = "Time overlap with already booked bookings"
-                    break
-        
-        if catererID:
-            db.execute(f"SELECT * FROM Caterer WHERE CatererID = {catererID}")
             if db.fetchone() is None:
-                err = "Caterer ID invalid"
+                err = "Room number invalid"
+            else:
+                db.execute(f"SELECT CheckInDate, CheckOutDate FROM Booking WHERE RoomNumber = {roomNo}")
+
+                for dateRange in db:
+                    if (dateRange[0] > checkIn and dateRange[0] < checkOut) or (
+                        dateRange[1] > checkIn and dateRange[1] < checkOut):
+                        err = "Time overlap with already booked bookings"
+                        break
+            
+            if err is None and catererID:
+                db.execute(f"SELECT * FROM Caterer WHERE CatererID = {catererID}")
+                if db.fetchone() is None:
+                    err = "Caterer ID invalid"
 
         if err is None:
-            db.execute(f"SELECT GuestID FROM Guest WHERE Username = {g.user[0]}")
+            db.execute(f"SELECT GuestID FROM Guest WHERE Username = '{g.user[0]}'")
             guestId = db.fetchone()[0]
 
             db.execute(f'''
@@ -57,16 +58,20 @@ def create():
                        WHERE RoomNumber = {roomNo}
                        ''')
             dayAmount = checkOut - checkIn
-            price = dayAmount.days() * db.fetchone()[0]
+            price = dayAmount.days * db.fetchone()[0]
 
+            if not catererID:
+                catererID = 'NULL'
+    
             db.execute(f'''
                        INSERT INTO Booking 
                        (GuestID, RoomNumber, CatererID, CheckInDate, CheckOutDate, TotalPrice)
                        VALUES
-                       ({guestId}, {roomNo}, {catererID}, {checkIn}, {checkOut}, {price})
+                       ({guestId}, {roomNo}, {catererID}, '{checkIn.isoformat()}', 
+                       '{checkOut.isoformat()}', {price})
                        ''')
 
-            return redirect(url_for('booking/index.html'))
+            return redirect(url_for('booking.index'))
 
         flash(err)
 
@@ -79,7 +84,7 @@ def get_booking(id):
 
     booking = db.fetchone()
 
-    db.execute(f"SELECT GuestID FROM Guest WHERE USERNAME = {g.user[0]}")
+    db.execute(f"SELECT GuestID FROM Guest WHERE USERNAME = '{g.user[0]}'")
     gid = db.fetchone()[0]
 
     if booking is None:
@@ -90,9 +95,9 @@ def get_booking(id):
     return booking
 
 
-@bp.route('/update/<int:id>', methods=('GET', 'POST'))
+@bp.route('/edit/<int:id>', methods=('GET', 'POST'))
 @require_login
-def update(id):
+def edit(id):
     booking = get_booking(id)
 
     if request.method == "POST":
@@ -102,30 +107,32 @@ def update(id):
         catererID = request.form['caterer']
         err = None
 
-        err, roomNo, checkIn, checkOut, catererID = validateAndTransform(roomNo, checkIn, checkOut, catererID)
-        
-        db = get_db()
+        err, roomNo, checkIn, checkOut, catererID = validateAndTransform(
+            roomNo, checkIn, checkOut, catererID)
 
-        db.execute(f"SELECT * FROM Room WHERE RoomNumber = {roomNo}")
+        if err is None:
+            db = get_db()
 
-        if db.fetchone() is None:
-            err = "Room number invalid"
-        else:
-            db.execute(f'''
-                       SELECT CheckInDate, CheckOutDate FROM Booking
-                       WHERE RoomNumber = {roomNo} AND BookingID <> {booking[0]}
-                       ''')
+            db.execute(f"SELECT * FROM Room WHERE RoomNumber = {roomNo}")
 
-            for dateRange in db:
-                if (dateRange[0] > checkIn and dateRange[0] < checkOut) or (
-                    dateRange[1] > checkIn and dateRange[1] < checkOut):
-                    err = "Time overlap with already booked bookings"
-                    break
-
-        if catererID:
-            db.execute(f"SELECT * FROM Caterer WHERE CatererID = {catererID}")
             if db.fetchone() is None:
-                err = "Caterer ID invalid"
+                err = "Room number invalid"
+            else:
+                db.execute(f'''
+                        SELECT CheckInDate, CheckOutDate FROM Booking
+                        WHERE RoomNumber = {roomNo} AND BookingID <> {booking[0]}
+                        ''')
+
+                for dateRange in db:
+                    if (dateRange[0] > checkIn and dateRange[0] < checkOut) or (
+                        dateRange[1] > checkIn and dateRange[1] < checkOut):
+                        err = "Time overlap with already booked bookings"
+                        break
+
+            if err is None and catererID:
+                db.execute(f"SELECT * FROM Caterer WHERE CatererID = {catererID}")
+                if db.fetchone() is None:
+                    err = "Caterer ID invalid"
 
         if err is None:
             db.execute(f'''
@@ -135,17 +142,31 @@ def update(id):
             dayAmount = checkOut - checkIn
             price = dayAmount.days() * db.fetchone()[0]
 
+            if not catererID:
+                catererID = 'NULL'
+
             db.execute(f'''
                        UPDATE Booking SET RoomNumber = {roomNo}, CatererID = {catererID},
-                       CheckInDate = {checkIn}, CheckOutDate = {checkOut}, TotalPrice = {price}
+                       CheckInDate = '{checkIn.isoformat()}', CheckOutDate = '{checkOut.isoformat()}', TotalPrice = {price}
                        WHERE BookingID = {booking[0]}
                        ''')
 
-            return redirect(url_for('booking/index.html'))
+            return redirect(url_for('booking.index'))
 
         flash(err)
 
-    return render_template('booking/update.html', original_booking=booking)
+    return render_template('booking/edit.html', original_booking=booking)
+
+
+@bp.route('/cancel/<int:id>', methods=('POST',))
+@require_login
+def cancel(id):
+    get_booking(id)
+
+    db = get_db()
+    db.execute(f"DELETE FROM Booking WHERE BookingID = {id}")
+    
+    return redirect(url_for('booking.index'))
 
 
 def validateAndTransform(roomNo, checkIn, checkOut, catererID):
@@ -160,6 +181,9 @@ def validateAndTransform(roomNo, checkIn, checkOut, catererID):
     elif catererID and not catererID.isnumeric():
         err = "Caterer ID must be numeric"
 
+    if err is not None:
+        return err,roomNo,checkIn,checkOut, catererID
+
     roomNo = int(roomNo)
     
     if catererID:
@@ -170,16 +194,8 @@ def validateAndTransform(roomNo, checkIn, checkOut, catererID):
         checkOut = datetime.strptime(checkOut, r'%Y-%m-%d').date()
     except ValueError:
         err = "Date input error; try again"
+    else:
+        if checkIn > checkOut:
+            err = "Check in date is after check out date"
     
     return err,roomNo,checkIn,checkOut, catererID
-
-
-@bp.route('/cancel/<int:id>', methods=('POST',))
-@require_login
-def cancel(id):
-    get_booking(id)
-
-    db = get_db()
-    db.execute(f"DELETE FROM Booking WHERE BookingID = {id}")
-    
-    return redirect(url_for('booking/index.html'))

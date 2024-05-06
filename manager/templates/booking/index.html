@@ -2,12 +2,12 @@
 
 {% block header %}
 <h1>{% block title %}Bookings{% endblock title %}</h1>
-{% if g.user %}
-<a class="b_action" href="{{ url_for('booking.create') }}">Book</a>
-{% endif %}
 {% endblock header %}
 
 {% block content %}
+{% if g.user %}
+<a class="b_action" href="{{ url_for('booking.create') }}">Book A Room Now</a>
+{% endif %}
 <table>
     <tr>
         <th>Booking ID</th>
@@ -18,13 +18,15 @@
     {% for booking in bookings %}
     <tr>
         {% for data in booking %}
-        {% if not loop.last %}
-        <td>{{ data }}</td>
-        {% else %}
-        {% if data == g.user[0] %}
-        <a class="b_action" href="{{ url_for('booking.edit', id=booking[0]) }}">Edit</a>
-        {% endif %}
-        {% endif %}
+        <td>
+            {% if not loop.last %}
+            {{ data }}
+            {% else %}
+            {% if data == g.user[0] %}
+            <a class="b_action" href="{{ url_for('booking.edit', id=booking[0]) }}">Edit</a>
+            {% endif %}
+            {% endif %}
+        </td>
         {% endfor %}
     </tr>
     {% endfor %}

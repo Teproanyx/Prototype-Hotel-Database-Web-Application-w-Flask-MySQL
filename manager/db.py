@@ -18,6 +18,8 @@ def get_db():
         else:
             raise(err)
 
+    g.db.autocommit = True
+
     return g.db.cursor()
 
 
@@ -44,8 +46,8 @@ def init_db_command():
 def insert_example_dataset():
     db = get_db()
 
-    with current_app.open_resource("example.sql") as ef:
-        db.execute(ef.read(), multi=True)
+    with current_app.open_resource("example.sql") as f:
+        db.execute(f.read(), multi=True)
 
 
 @click.command('ins-example')

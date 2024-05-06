@@ -14,7 +14,7 @@ def register():
         password = request.form['password']
         firstname = request.form['firstname']
         lastname = request.form['lastname']
-        phone = request.form['phoneno']
+        phone = request.form['phone']
         email = request.form['email']
 
         db = get_db()
@@ -33,8 +33,8 @@ def register():
                            INSERT INTO Guest 
                            (FirstName, LastName, Phone, Email, Username, GuestPassword) 
                            VALUES 
-                           ({firstname}, {lastname}, {phone}, {email}, {username}, 
-                           {generate_password_hash(password)})
+                           ("{firstname}", "{lastname}", "{phone}", "{email}", "{username}", 
+                           "{generate_password_hash(password)}")
                            ''')
             except IntegrityError:
                 err = f"{username} is already registered."
@@ -55,10 +55,10 @@ def login():
         db = get_db()
         error = None
 
-        if user is None:
+        if username is None:
             error = "Incorrect username"
         else:
-            db.execute(f"SELECT Username, GuestPassword FROM Guest WHERE Username = {username}")
+            db.execute(f"SELECT Username, GuestPassword FROM Guest WHERE Username = '{username}'")
             user = db.fetchone()
 
             if not check_password_hash(user[1], password):
@@ -82,7 +82,7 @@ def cached_login_user():
         g.user = None
     else:
         cursor = get_db()
-        cursor.execute(f"SELECT Username, GuestPassword FROM Guest WHERE Username = {u_id}")
+        cursor.execute(f"SELECT Username, GuestPassword FROM Guest WHERE Username = '{u_id}'")
         g.user = cursor.fetchone()
 
 
@@ -108,13 +108,13 @@ def require_login(view):
 def edit():
     db = get_db()
     username = g.user[0]
-    db.execute(f"SELECT FirstName, LastName, Phone, Email FROM Guest WHERE Username = {username}")
+    db.execute(f"SELECT FirstName, LastName, Phone, Email FROM Guest WHERE Username = '{username}'")
     original = db.fetchone()
 
     if request.method == "POST":
         firstname = request.form['firstname']
         lastname = request.form['lastname']
-        phone = request.form['phoneno']
+        phone = request.form['phone']
         email = request.form['email']
         
         err = None
@@ -123,9 +123,9 @@ def edit():
 
         if err is None:
             db.execute(f'''
-                        UPDATE Guest SET FirstName = {firstname},
-                        LastName = {lastname}, Phone = {phone}, Email = {email}
-                        WHERE Username = {username}
+                        UPDATE Guest SET FirstName = "{firstname}",
+                        LastName = "{lastname}", Phone = "{phone}", Email = "{email}"
+                        WHERE Username = "{username}"
                         ''')
             return redirect(url_for('booking.index'))
 
