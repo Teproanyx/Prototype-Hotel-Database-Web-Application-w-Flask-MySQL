@@ -148,6 +148,17 @@ def update(id):
     return render_template('booking/update.html', original_booking=booking)
 
 
+@bp.route('/cancel/<int:id>', methods=('POST',))
+@require_login
+def cancel(id):
+    get_booking(id)
+
+    db = get_db()
+    db.execute(f"DELETE FROM Booking WHERE BookingID = {id}")
+    
+    return redirect(url_for('booking/index.html'))
+
+
 def validateAndTransform(roomNo, checkIn, checkOut, catererID):
     err = None
 
