@@ -10,8 +10,8 @@ bp = Blueprint("booking", __name__, url_prefix="/booking")
 @bp.route('/index')
 def index():
     db = get_db()
-    db.execute('''SELECT BookingID, RoomNumber, CheckInDate, CheckOutDate, GuestID 
-               FROM Booking NATURAL JOIN RoomBooking''')
+    db.execute('''SELECT BookingID, RoomNumber, CheckInDate, CheckOutDate, Username 
+               FROM Booking NATURAL JOIN Guest''')
     all_bookings = db.fetchall()
 
     return render_template('booking/index.html', bookings=all_bookings)
@@ -23,9 +23,10 @@ def create():
         roomNo = request.form['roomNo']
         checkIn = request.form['checkIn']
         checkOut = request.form['checkOut']
+        catererID = request.form['caterer']
         err = None
 
-        err, roomNo, checkIn, checkOut = validateAndTransform(roomNo, checkIn, checkOut)
+        err, roomNo, checkIn, checkOut, catererID = validateAndTransform(roomNo, checkIn, checkOut, catererID)
         
         db = get_db()
 
@@ -42,6 +43,10 @@ def create():
                     err = "Time overlap with already booked bookings"
                     break
         
+        if catererID:
+            db.execute(f"SELECT * FROM Caterer WHERE CatererID = {catererID}")
+            if db.fetchone() is None:
+                err = "Caterer ID invalid"
 
         if err is None:
             db.execute(f"SELECT GuestID FROM Guest WHERE Username = {g.user[0]}")
@@ -56,9 +61,9 @@ def create():
 
             db.execute(f'''
                        INSERT INTO Booking 
-                       (GuestID, RoomNumber, CheckInDate, CheckOutDate, TotalPrice)
+                       (GuestID, RoomNumber, CatererID, CheckInDate, CheckOutDate, TotalPrice)
                        VALUES
-                       ({guestId}, {roomNo}, {checkIn}, {checkOut}, {price})
+                       ({guestId}, {roomNo}, {catererID}, {checkIn}, {checkOut}, {price})
                        ''')
 
             return redirect(url_for('booking/index.html'))
@@ -94,9 +99,10 @@ def update(id):
         roomNo = request.form['roomNo']
         checkIn = request.form['checkIn']
         checkOut = request.form['checkOut']
+        catererID = request.form['caterer']
         err = None
 
-        err, roomNo, checkIn, checkOut = validateAndTransform(roomNo, checkIn, checkOut)
+        err, roomNo, checkIn, checkOut, catererID = validateAndTransform(roomNo, checkIn, checkOut, catererID)
         
         db = get_db()
 
@@ -115,7 +121,11 @@ def update(id):
                     dateRange[1] > checkIn and dateRange[1] < checkOut):
                     err = "Time overlap with already booked bookings"
                     break
-        
+
+        if catererID:
+            db.execute(f"SELECT * FROM Caterer WHERE CatererID = {catererID}")
+            if db.fetchone() is None:
+                err = "Caterer ID invalid"
 
         if err is None:
             db.execute(f'''
@@ -126,8 +136,8 @@ def update(id):
             price = dayAmount.days() * db.fetchone()[0]
 
             db.execute(f'''
-                       UPDATE Booking SET RoomNumber = {roomNo}, CheckInDate = {checkIn},
-                       CheckOutDate = {checkOut}, TotalPrice = {price}
+                       UPDATE Booking SET RoomNumber = {roomNo}, CatererID = {catererID},
+                       CheckInDate = {checkIn}, CheckOutDate = {checkOut}, TotalPrice = {price}
                        WHERE BookingID = {booking[0]}
                        ''')
 
@@ -138,7 +148,7 @@ def update(id):
     return render_template('booking/update.html', original_booking=booking)
 
 
-def validateAndTransform(roomNo, checkIn, checkOut):
+def validateAndTransform(roomNo, checkIn, checkOut, catererID):
     err = None
 
     if not roomNo or not roomNo.isnumeric():
@@ -147,8 +157,13 @@ def validateAndTransform(roomNo, checkIn, checkOut):
         err = "Check in date required"
     elif not checkOut:
         err = "Check out date required"
+    elif catererID and not catererID.isnumeric():
+        err = "Caterer ID must be numeric"
 
     roomNo = int(roomNo)
+    
+    if catererID:
+        catererID = int(catererID)
 
     try:
         checkIn = datetime.strptime(checkIn, r'%Y-%m-%d').date()
@@ -156,7 +171,7 @@ def validateAndTransform(roomNo, checkIn, checkOut):
     except ValueError:
         err = "Date input error; try again"
     
-    return err,roomNo,checkIn,checkOut
+    return err,roomNo,checkIn,checkOut, catererID
 
 
 @bp.route('/cancel/<int:id>', methods=('POST',))
