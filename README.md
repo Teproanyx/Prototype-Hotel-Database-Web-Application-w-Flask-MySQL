@@ -18,5 +18,5 @@ Using Flask backend with a MySQL database to implement a basic CRUD web applicat
     },
     "SECRET_KEY": [PUT IN ANY VALID STRING, JUST KEEP IT SECRET]
 }`
-7. In the root folder of project, run flask `--app manager init-db` followed by `flask --app manager ins-example` followed by `flask --app manager run`
+7. In the root folder of project, run `flask --app manager init-db` followed by `flask --app manager ins-example` followed by `flask --app manager run`
 8. Check your localhost; profit
