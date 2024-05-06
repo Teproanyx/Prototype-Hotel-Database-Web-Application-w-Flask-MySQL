@@ -1,4 +1,3 @@
-DROP TABLE IF EXISTS RoomBooking;
 DROP TABLE IF EXISTS Caterer;
 DROP TABLE IF EXISTS Booking;
 DROP TABLE IF EXISTS Guest;
@@ -27,7 +26,6 @@ CREATE TABLE Room(
     RoomNumber INT PRIMARY KEY AUTO_INCREMENT,
     TypeID INT NOT NULL,
     StaffID INT NOT NULL,
-    RoomStatus varchar(20) NOT NULL,
     foreign key(TypeID) references RoomType(TypeID),
     foreign key(StaffID) references Staff(StaffID)
 );
@@ -61,9 +59,3 @@ CREATE TABLE Caterer(
     Email varchar(255) NOT NULL,
     HireDate date NOT NULL
 );
-CREATE TABLE RoomBooking(
-    RoomNumber INT NOT NULL,
-    BookingID INT NOT NULL,
-    foreign key(RoomNumber) references Room(RoomNumber),
-    foreign key(BookingID) references Booking(BookingID)
-)
