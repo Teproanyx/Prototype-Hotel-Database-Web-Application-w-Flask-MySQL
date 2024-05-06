@@ -21,9 +21,19 @@ def room():
 @bp.route('/staff')
 def staff():
     db = get_db()
-    info_header = ("Staff ID", "First Name", "Last Name", "Phone", "Email")
+    info_header = ("Staff ID", "First Name", "Last Name", "Phone Number", "Email")
     
     db.execute(f"SELECT Staff ID, First Name, Last Name, Phone, Email FROM Staff")
     
     return render_template("viewing/viewtable.html", title="Staffs", headers=info_header, 
+                           table=db.fetchall())
+
+@bp.route('/caterer')
+def caterer():
+    db = get_db()
+    info_header = ("Caterer ID", "Team Name", "Phone Number", "Email")
+
+    db.execute(f"SELECT CatererID, TeamName, Phone, Email FROM Caterer")
+
+    return render_template("viewing/viewtable.html", title="Caterer Teams", headers=info_header,
                            table=db.fetchall())
