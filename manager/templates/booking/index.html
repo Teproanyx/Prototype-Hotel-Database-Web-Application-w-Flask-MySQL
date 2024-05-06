@@ -18,13 +18,15 @@
     {% for booking in bookings %}
     <tr>
         {% for data in booking %}
-        {% if not loop.last %}
-        <td>{{ data }}</td>
-        {% else %}
-        {% if data == g.user[0] %}
-        <a class="b_action" href="{{ url_for('booking.edit', id=booking[0]) }}">Edit</a>
-        {% endif %}
-        {% endif %}
+        <td>
+            {% if not loop.last %}
+            {{ data }}
+            {% else %}
+            {% if data == g.user[0] %}
+            <a class="b_action" href="{{ url_for('booking.edit', id=booking[0]) }}">Edit</a>
+            {% endif %}
+            {% endif %}
+        </td>
         {% endfor %}
     </tr>
     {% endfor %}

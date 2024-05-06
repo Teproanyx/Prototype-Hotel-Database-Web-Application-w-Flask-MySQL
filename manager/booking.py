@@ -58,16 +58,20 @@ def create():
                        WHERE RoomNumber = {roomNo}
                        ''')
             dayAmount = checkOut - checkIn
-            price = dayAmount.days() * db.fetchone()[0]
+            price = dayAmount.days * db.fetchone()[0]
 
+            if not catererID:
+                catererID = 'NULL'
+    
             db.execute(f'''
                        INSERT INTO Booking 
                        (GuestID, RoomNumber, CatererID, CheckInDate, CheckOutDate, TotalPrice)
                        VALUES
-                       ({guestId}, {roomNo}, {catererID}, {checkIn}, {checkOut}, {price})
+                       ({guestId}, {roomNo}, {catererID}, '{checkIn.isoformat()}', 
+                       '{checkOut.isoformat()}', {price})
                        ''')
 
-            return redirect(url_for('booking/index.html'))
+            return redirect(url_for('booking.index'))
 
         flash(err)
 
@@ -91,9 +95,9 @@ def get_booking(id):
     return booking
 
 
-@bp.route('/update/<int:id>', methods=('GET', 'POST'))
+@bp.route('/edit/<int:id>', methods=('GET', 'POST'))
 @require_login
-def update(id):
+def edit(id):
     booking = get_booking(id)
 
     if request.method == "POST":
@@ -103,7 +107,8 @@ def update(id):
         catererID = request.form['caterer']
         err = None
 
-        err, roomNo, checkIn, checkOut, catererID = validateAndTransform(roomNo, checkIn, checkOut, catererID)
+        err, roomNo, checkIn, checkOut, catererID = validateAndTransform(
+            roomNo, checkIn, checkOut, catererID)
 
         if err is None:
             db = get_db()
@@ -137,17 +142,20 @@ def update(id):
             dayAmount = checkOut - checkIn
             price = dayAmount.days() * db.fetchone()[0]
 
+            if not catererID:
+                catererID = 'NULL'
+
             db.execute(f'''
                        UPDATE Booking SET RoomNumber = {roomNo}, CatererID = {catererID},
-                       CheckInDate = {checkIn}, CheckOutDate = {checkOut}, TotalPrice = {price}
+                       CheckInDate = '{checkIn.isoformat()}', CheckOutDate = '{checkOut.isoformat()}', TotalPrice = {price}
                        WHERE BookingID = {booking[0]}
                        ''')
 
-            return redirect(url_for('booking/index.html'))
+            return redirect(url_for('booking.index'))
 
         flash(err)
 
-    return render_template('booking/update.html', original_booking=booking)
+    return render_template('booking/edit.html', original_booking=booking)
 
 
 @bp.route('/cancel/<int:id>', methods=('POST',))
@@ -158,7 +166,7 @@ def cancel(id):
     db = get_db()
     db.execute(f"DELETE FROM Booking WHERE BookingID = {id}")
     
-    return redirect(url_for('booking/index.html'))
+    return redirect(url_for('booking.index'))
 
 
 def validateAndTransform(roomNo, checkIn, checkOut, catererID):
