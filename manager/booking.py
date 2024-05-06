@@ -49,7 +49,7 @@ def create():
                 err = "Caterer ID invalid"
 
         if err is None:
-            db.execute(f"SELECT GuestID FROM Guest WHERE Username = {g.user[0]}")
+            db.execute(f"SELECT GuestID FROM Guest WHERE Username = '{g.user[0]}'")
             guestId = db.fetchone()[0]
 
             db.execute(f'''
@@ -79,7 +79,7 @@ def get_booking(id):
 
     booking = db.fetchone()
 
-    db.execute(f"SELECT GuestID FROM Guest WHERE USERNAME = {g.user[0]}")
+    db.execute(f"SELECT GuestID FROM Guest WHERE USERNAME = '{g.user[0]}'")
     gid = db.fetchone()[0]
 
     if booking is None:
