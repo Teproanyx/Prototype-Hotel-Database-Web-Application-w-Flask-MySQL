@@ -5,7 +5,7 @@
     <li><a href="{{ url_for('room') }}">Rooms</a></li>
     <li><a href="{{ url_for('booking.index') }}">Bookings</a></li>
     <li><a href="{{ url_for('viewing.staff') }}">Staff</a></li>
-    <li><a href="{{ url_for('viewing.caterer') }}">Caterer</li>
+    <li><a href="{{ url_for('viewing.caterer') }}">Caterer</a></li>
     {% if g.user %}
     <li><a href="{{ url_for('auth.edit') }}">{{ g.user[0] }}</a></li>
     <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
