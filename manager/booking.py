@@ -10,7 +10,8 @@ bp = Blueprint("booking", __name__, url_prefix="/booking")
 @bp.route('/index')
 def index():
     db = get_db()
-    db.execute("SELECT BookingID, RoomNumber, CheckInDate, CheckOutDate, GuestID FROM Booking")
+    db.execute('''SELECT BookingID, RoomNumber, CheckInDate, CheckOutDate, GuestID 
+               FROM Booking NATURAL JOIN RoomBooking''')
     all_bookings = db.fetchall()
 
     return render_template('booking/index.html', bookings=all_bookings)
@@ -24,7 +25,7 @@ def create():
         checkOut = request.form['checkOut']
         err = None
 
-        roomNo, checkIn, checkOut = validateAndTransform(roomNo, checkIn, checkOut)
+        err, roomNo, checkIn, checkOut = validateAndTransform(roomNo, checkIn, checkOut)
         
         db = get_db()
 
@@ -95,7 +96,7 @@ def update(id):
         checkOut = request.form['checkOut']
         err = None
 
-        roomNo, checkIn, checkOut = validateAndTransform(roomNo, checkIn, checkOut)
+        err, roomNo, checkIn, checkOut = validateAndTransform(roomNo, checkIn, checkOut)
         
         db = get_db()
 
@@ -138,6 +139,8 @@ def update(id):
 
 
 def validateAndTransform(roomNo, checkIn, checkOut):
+    err = None
+
     if not roomNo or not roomNo.isnumeric():
         err = "Room must be selected"
     elif not checkIn:
@@ -152,7 +155,8 @@ def validateAndTransform(roomNo, checkIn, checkOut):
         checkOut = datetime.strptime(checkOut, r'%Y-%m-%d').date()
     except ValueError:
         err = "Date input error; try again"
-    return roomNo,checkIn,checkOut
+    
+    return err,roomNo,checkIn,checkOut
 
 
 @bp.route('/cancel/<int:id>', methods=('POST',))
