@@ -44,7 +44,6 @@ CREATE TABLE Guest(
 CREATE TABLE Booking(
     BookingID INT PRIMARY KEY AUTO_INCREMENT,
     GuestID INT NOT NULL,
-    RoomNumber INT NOT NULL,
     CatererID INT,
     CheckInDate date NOT NULL,
     CheckOutDate date NOT NULL,
