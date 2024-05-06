@@ -24,18 +24,10 @@ def register():
             err = "Username is required"
         elif not password:
             err = "Password is required"
-        elif not firstname:
-            err = "First Name is required"
-        elif not lastname:
-            err = "Last Name is required"
-        elif not phone:
-            err = "Phone number is required"
-        elif not email:
-            err = "Email is required"
-        elif not phone.isnumeric():
-            err = "Phone number needs to be a number"
+        else:
+            err = verify_profile_info(firstname, lastname, phone, email)
         
-        if err is not None:
+        if err is None:
             try:
                 db.execute(f'''
                            INSERT INTO Guest 
@@ -63,13 +55,14 @@ def login():
         db = get_db()
         error = None
 
-        db.execute(f"SELECT Username, GuestPassword FROM Guest WHERE Username = {username}")
-        user = db.fetchone()
-
         if user is None:
             error = "Incorrect username"
-        elif not check_password_hash(user[1], password):
-            error = "Incorrect password"
+        else:
+            db.execute(f"SELECT Username, GuestPassword FROM Guest WHERE Username = {username}")
+            user = db.fetchone()
+
+            if not check_password_hash(user[1], password):
+                error = "Incorrect password"
 
         if error is None:
             session.clear()
@@ -124,21 +117,11 @@ def edit():
         phone = request.form['phoneno']
         email = request.form['email']
         
-
         err = None
 
-        if not firstname:
-            err = "First Name is required"
-        elif not lastname:
-            err = "Last Name is required"
-        elif not phone:
-            err = "Phone number is required"
-        elif not email:
-            err = "Email is required"
-        elif not phone.isnumeric():
-            err = "Phone number needs to be a number"
+        err = verify_profile_info(firstname, lastname, phone, email)
 
-        if err is not None:
+        if err is None:
             db.execute(f'''
                         UPDATE Guest SET FirstName = {firstname},
                         LastName = {lastname}, Phone = {phone}, Email = {email}
@@ -149,3 +132,19 @@ def edit():
         flash(err)
 
     return render_template('auth/edit.html', orig=original)
+
+
+def verify_profile_info(firstname, lastname, phone, email):
+    err = None
+
+    if not firstname:
+        err = "First Name is required"
+    elif not lastname:
+        err = "Last Name is required"
+    elif not phone:
+        err = "Phone number is required"
+    elif not email:
+        err = "Email is required"
+    elif not phone.isnumeric():
+        err = "Phone number needs to be a number"
+    return err
