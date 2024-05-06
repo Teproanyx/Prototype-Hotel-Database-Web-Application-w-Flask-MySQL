@@ -37,9 +37,3 @@ VALUES
     ('Koala', 150000, '0922222222', 'koalacaterer@gmail.com', STR_TO_DATE('04/05/2000', '%d/%m/%Y')),
     ('Sloth', 50000, '0933333333', 'slothcaterer@gmail.com', STR_TO_DATE('04/05/2000', '%d/%m/%Y')),
     ('Capybara', 200000, '0944444444', 'capybaracaterer@gmail.com', STR_TO_DATE('04/05/2000', '%d/%m/%Y'));
-
-INSERT INTO Guest(FirstName, LastName, Phone, Email, Username, GuestPassword)
-VALUES
-    ('Charles', 'Lin', '0898989898', 'charleslin@gmail.com', 'CharlesL', 'sussyguest1234'),
-    ('Elizabeth', 'Wen', '0989898989', 'bethywen@gmail.com', 'ElizabethW', 'yayyay2468'),
-    ('Colin', 'Yang', '0878787878', 'colinyang@gmail.com', 'ColinY', 'mrcolin1379+');
