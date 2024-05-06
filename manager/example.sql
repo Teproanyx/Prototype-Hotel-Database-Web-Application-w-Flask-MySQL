@@ -16,17 +16,17 @@ VALUES
     ('James', 'Bond', 200000, STR_TO_DATE('07/07/2001', '%d/%m/%Y'), 0877777777, 'jamesbond@gmail.com', STR_TO_DATE('04/05/2000', '%d/%m/%Y')),
     ('Kong', 'Godzilla', 160000, STR_TO_DATE('03/03/2000', '%d/%m/%Y'), 0833333333, 'konggozzy@gmail.com', STR_TO_DATE('04/05/2000', '%d/%m/%Y'));
 
-INSERT INTO Room(TypeID, StaffID, RoomStatus)
+INSERT INTO Room(TypeID, StaffID)
 VALUES
-    (1, 1, 'Available'),
-    (1, 2, 'Available'),
-    (2, 3, 'Available'),
-    (2, 4, 'Available'),
-    (3, 5, 'Available'),
-    (3, 1, 'Available'),
-    (4, 2, 'Available'),
-    (4, 3, 'Available'),
-    (5, 4, 'Available'),
-    (5, 5, 'Available'),
-    (6, 1, 'Available'),
-    (7, 2, 'Available');
+    (1, 1),
+    (1, 2),
+    (2, 3),
+    (2, 4),
+    (3, 5),
+    (3, 1),
+    (4, 2),
+    (4, 3),
+    (5, 4),
+    (5, 5),
+    (6, 1),
+    (7, 2);

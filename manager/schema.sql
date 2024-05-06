@@ -27,7 +27,6 @@ CREATE TABLE Room(
     RoomNumber INT PRIMARY KEY AUTO_INCREMENT,
     TypeID INT NOT NULL,
     StaffID INT NOT NULL,
-    RoomStatus varchar(20) NOT NULL,
     foreign key(TypeID) references RoomType(TypeID),
     foreign key(StaffID) references Staff(StaffID)
 );
