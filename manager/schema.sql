@@ -1,5 +1,5 @@
-DROP TABLE IF EXISTS Caterer;
 DROP TABLE IF EXISTS Booking;
+DROP TABLE IF EXISTS Caterer;
 DROP TABLE IF EXISTS Guest;
 DROP TABLE IF EXISTS Room;
 DROP TABLE IF EXISTS Staff;
@@ -39,6 +39,14 @@ CREATE TABLE Guest(
     GuestPassword varchar(255) NOT NULL,
     UNIQUE(Username)
 );
+CREATE TABLE Caterer(
+    CatererID INT PRIMARY KEY AUTO_INCREMENT,
+    TeamName varchar(50) NOT NULL,
+    Salary decimal(10,2) NOT NULL,
+    Phone varchar(15) NOT NULL,
+    Email varchar(255) NOT NULL,
+    HireDate date NOT NULL
+);
 CREATE TABLE Booking(
     BookingID INT PRIMARY KEY AUTO_INCREMENT,
     GuestID INT NOT NULL,
@@ -50,12 +58,4 @@ CREATE TABLE Booking(
     foreign key(GuestID) references Guest(GuestID),
     foreign key(RoomNumber) references Room(RoomNumber),
     foreign key(CatererID) references Caterer(CatererID)
-);
-CREATE TABLE Caterer(
-    CatererID INT PRIMARY KEY AUTO_INCREMENT,
-    TeamName varchar(50) NOT NULL,
-    Salary decimal(10,2) NOT NULL,
-    Phone varchar(15) NOT NULL,
-    Email varchar(255) NOT NULL,
-    HireDate date NOT NULL
 );
