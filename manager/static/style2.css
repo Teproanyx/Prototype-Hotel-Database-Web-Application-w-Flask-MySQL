@@ -76,7 +76,8 @@ nav {
   background-color: #fff;
   color: #333;
   text-decoration: none;
-  padding: 1rem 2rem;
+  padding: 1rem 1rem;
+  margin-bottom: 5rem;
   border-radius: 10px;
   transition: background-color 0.3s ease;
 }
@@ -84,6 +85,23 @@ nav {
 .btn:hover {
   background-color: #ddd;
 }
+
+.br{
+  background-color: white;
+  padding: 2rem;
+}
+.btbr{
+  background-color: #ddd;
+  color: #333;
+  padding: 1rem 1rem;
+  margin-bottom: 2rem;
+  border-radius: 15px;
+  transition: background-color 0.3s ease;
+  
+}
+ .btbr:hover{
+  background-color: #ccc;
+ }
 
 /* Features Section */
 .features {
@@ -123,7 +141,9 @@ main {
 }
 
 h1 {
-  margin-bottom: 1rem;
+  margin-bottom: 0rem;
+  padding-top: 30px;
+  padding-bottom: 0;
 }
 
 table {
@@ -136,6 +156,9 @@ td {
   padding: 0.5rem;
   text-align: left;
   border-bottom: 1px solid #ddd;
+
+}
+.edit bt{
 
 }
 
