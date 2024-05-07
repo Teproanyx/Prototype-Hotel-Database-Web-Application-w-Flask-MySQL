@@ -1,4 +1,3 @@
-
 /* Reset CSS */
 * {
   margin: 0;
@@ -6,11 +5,21 @@
   box-sizing: border-box;
 }
 
+.background {
+  width: 100%;
+  height: 70vh;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url(https://content.r9cdn.net/rimg/himg/8d/46/4d/expediav2-132927-1627047956-593724.jpg?width=1200&height=630&crop=true);
+  background-size: cover;
+  background-position: center;
+  border-radius: 55px;
+
+}
+
 /* Header */
 header {
   background-color: #333;
   color: #fff;
-  padding: 1rem;
+  padding: 1.5rem;
 }
 
 nav {
@@ -105,4 +114,66 @@ footer {
   color: #fff;
   text-align: center;
   padding: 1rem;
+}
+
+
+
+main {
+  padding: 2rem;
+}
+
+h1 {
+  margin-bottom: 1rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 0.5rem;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+
+}
+
+th {
+  background-color: #f2f2f2;
+
+}
+
+
+.form-group {
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="tel"],
+input[type="email"] {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+}
+
+button[type="submit"] {
+  padding: 0.5rem 1rem;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+button[type="submit"]:hover {
+  background-color: #555;
 }

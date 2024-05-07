@@ -2,29 +2,16 @@
 
 {% block header %}{% endblock header %}
 
-{% block title %}Hotel Booking{% endblock title %}
-
-{% block style %}
-<link rel="stylesheet" href="{{ url_for('static', filename='style2.css') }}">
-{% endblock style %}
-
-{% block nav %}
-<div class="logo">
-    <a href="#">Hotel Logo</a>
-</div>
-<div class="menu">
-    {{ super() }}
-</div>
-{% endblock nav %}
-
 {% block content %}
-<section class="hero">
-    <div class="hero-content">
-        <h1>Welcome to Our Hotel</h1>
-        <p>Book your stay and experience luxury.</p>
-        <a href="#" class="btn">Book Now</a>
-    </div>
-</section>
+<div class="background">
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Welcome to Our Hotel</h1>
+            <p>Book your stay and experience luxury.</p>
+            <a href="{{ url_for('booking.index') }}" class="btn">Book Now</a>
+        </div>
+    </section>
+</div>
 
 <section class="features">
     <div class="feature">

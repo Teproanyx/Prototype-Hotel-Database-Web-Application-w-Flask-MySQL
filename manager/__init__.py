@@ -25,12 +25,12 @@ def create_app(test_config=None):
 
     db.init_app(app)
 
-    app.register_blueprint(home.bp)
-
     app.register_blueprint(auth.bp)
 
     app.register_blueprint(booking.bp)
 
     app.register_blueprint(viewing.bp)
+
+    app.register_blueprint(home.bp)
 
     return app

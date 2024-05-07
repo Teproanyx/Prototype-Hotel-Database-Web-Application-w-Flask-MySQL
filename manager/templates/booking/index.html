@@ -25,7 +25,7 @@
             {{ data }}
             {% else %}
             {% if data == g.user['Username'] %}
-            <a class="b_action" href="{{ url_for('booking.edit', id=booking['BookingID']) }}">Edit</a>
+            <a class="btn" href="{{ url_for('booking.edit', id=booking['BookingID']) }}">Edit</a>
             {% endif %}
             {% endif %}
         </td>
