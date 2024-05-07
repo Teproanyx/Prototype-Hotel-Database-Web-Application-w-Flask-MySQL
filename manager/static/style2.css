@@ -168,7 +168,6 @@ th {
 
 }
 
-
 .form-group {
   margin-bottom: 1rem;
   text-align: left;
@@ -204,4 +203,11 @@ button[type="submit"]:hover {
 
 button[type="submit"].cancel {
   background-color: red;
+}
+
+.flash {
+  margin: 1em 0;
+  padding: 1em;
+  background: #dbeef9;
+  border: 1px solid #2e6a93;
 }
