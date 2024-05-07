@@ -22,8 +22,9 @@
         <label for="caterer">Caterer Team ID</label>
         <input type="number" name="caterer" id="caterer" value="{{ original_booking['CatererID'] }}">
     </div>
-    <button type="submit">Save</button>
+    <button type="submit">Save edit</button>
 </form>
+<a class="btn" href="{{ url_for('booking.index') }}">Cancel edit</a>
 <form action="{{ url_for('booking.cancel', id=original_booking['BookingID']) }}" method="post">
     <button type="submit" class="cancel" onclick="return confirm('Are you sure?');">Cancel booking!?</button>
 </form>
