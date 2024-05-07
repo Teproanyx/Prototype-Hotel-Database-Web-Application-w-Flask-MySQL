@@ -4,4 +4,4 @@ bp = Blueprint("home", __name__)
 
 @bp.route('/')
 def homepage():
-    return render_template('homepage/homepage.html')
+    return render_template('homepage.html')
