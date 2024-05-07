@@ -3,30 +3,34 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}HotelDB{% endblock title %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style2.css') }}">
 </head>
 
 <body>
     <header>
         {% block header %}Default Header{% endblock header %}
-    </header>
 
-    <nav>
-        {% block nav %}
-        <ul>
-            <li>Implement Navigation bar</li>
-        </ul>
-        {% endblock nav %}
-    </nav>
+        <nav>
+            {% block nav %}
+            <p>Implement Navigation bar</p>
+            {% endblock nav %}
+        </nav>
+
+    </header>
 
     {% for message in get_flashed_messages() %}
     <div class="flash">{{ message }}</div>
     {% endfor %}
 
-    <section class="content">
+    <main>
         {% block content %}{% endblock content %}
-    </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Hotel Booking. All rights reserved.</p>
+    </footer>
 </body>
 
 </html>

@@ -4,7 +4,7 @@ from .db import get_db
 
 bp = Blueprint("viewing", __name__)
 
-@bp.route('/')
+@bp.route('/room')
 def room():
     db = get_db()
     info_header = ("Room Number", "Room Type", r"Price/Night", "Capacity", "Details", "Cleaning Staff")

@@ -1,17 +1,22 @@
 {% extends "base.html" %}
 
 {% block nav %}
-<ul>
-    <li><a href="{{ url_for('room') }}">Rooms</a></li>
-    <li><a href="{{ url_for('booking.index') }}">Bookings</a></li>
-    <li><a href="{{ url_for('viewing.staff') }}">Staff</a></li>
-    <li><a href="{{ url_for('viewing.caterer') }}">Caterer</a></li>
-    {% if g.user %}
-    <li><a href="{{ url_for('auth.edit') }}">{{ g.user['Username'] }}</a></li>
-    <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
-    {% else %}
-    <li><a href="{{ url_for('auth.login') }}">Login</a></li>
-    <li><a href="{{ url_for('auth.register') }}">Register</a></li>
-    {% endif %}
-</ul>
+<div class="logo">
+    <a href="{{ url_for('home.homepage') }}">Hotel Logo</a>
+</div>
+<div class="menu">
+    <ul>
+        <li><a href="{{ url_for('viewing.room') }}">Rooms</a></li>
+        <li><a href="{{ url_for('booking.index') }}">Bookings</a></li>
+        <li><a href="{{ url_for('viewing.staff') }}">Staff</a></li>
+        <li><a href="{{ url_for('viewing.caterer') }}">Caterer</a></li>
+        {% if g.user %}
+        <li><a href="{{ url_for('auth.edit') }}">{{ g.user['Username'] }}</a></li>
+        <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+        {% else %}
+        <li><a href="{{ url_for('auth.login') }}">Login</a></li>
+        <li><a href="{{ url_for('auth.register') }}">Register</a></li>
+        {% endif %}
+    </ul>
+</div>
 {% endblock nav %}

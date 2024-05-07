@@ -6,17 +6,22 @@
 
 {% block content %}
 <table>
-    <tr>
-        {% for table_header in headers %}
-        <th>{{ table_header }}</th>
+    <thead>
+        <tr>
+
+            {% for table_header in headers %}
+            <th>{{ table_header }}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in table %}
+        <tr>
+            {% for col in row.values() %}
+            <td>{{ col }}</td>
+            {% endfor %}
+        </tr>
         {% endfor %}
-    </tr>
-    {% for row in table %}
-    <tr>
-        {% for col in row.values() %}
-        <td>{{ col }}</td>
-        {% endfor %}
-    </tr>
-    {% endfor %}
+    </tbody>
 </table>
 {% endblock content %}
