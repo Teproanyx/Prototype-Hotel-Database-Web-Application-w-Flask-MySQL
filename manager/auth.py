@@ -29,13 +29,23 @@ def register():
         
         if err is None:
             try:
-                db.execute(f'''
-                           INSERT INTO Guest 
-                           (FirstName, LastName, Phone, Email, Username, GuestPassword) 
-                           VALUES 
-                           ("{firstname}", "{lastname}", "{phone}", "{email}", "{username}", 
-                           "{generate_password_hash(password)}")
-                           ''')
+                query = '''
+                        INSERT INTO Guest 
+                        (FirstName, LastName, Phone, Email, Username, GuestPassword) 
+                        VALUES  (%(fn)s, %(ln)s, %(ph)s, %(em)s, %(user)s, %(hash)s)
+                        '''
+                
+                values = {
+                    'fn': firstname,
+                    'ln': lastname,
+                    'ph': phone,
+                    'em': email,
+                    'user': username,
+                    'hash': generate_password_hash(password)
+                }
+    
+                db.execute(query, values)
+
             except IntegrityError:
                 err = f"{username} is already registered."
             else:
@@ -58,15 +68,15 @@ def login():
         if username is None:
             error = "Incorrect username"
         else:
-            db.execute(f"SELECT Username, GuestPassword FROM Guest WHERE Username = '{username}'")
+            db.execute("SELECT Username, GuestPassword FROM Guest WHERE Username = %s", (username,))
             user = db.fetchone()
 
-            if not check_password_hash(user[1], password):
+            if not check_password_hash(user['GuestPassword'], password):
                 error = "Incorrect password"
 
         if error is None:
             session.clear()
-            session['u_id'] = user[0]
+            session['u_id'] = user['Username']
             return redirect(url_for('room'))
         
         flash(error)
@@ -82,7 +92,7 @@ def cached_login_user():
         g.user = None
     else:
         cursor = get_db()
-        cursor.execute(f"SELECT Username, GuestPassword FROM Guest WHERE Username = '{u_id}'")
+        cursor.execute("SELECT Username, GuestPassword FROM Guest WHERE Username = %s", (u_id,))
         g.user = cursor.fetchone()
 
 
@@ -107,8 +117,8 @@ def require_login(view):
 @require_login
 def edit():
     db = get_db()
-    username = g.user[0]
-    db.execute(f"SELECT FirstName, LastName, Phone, Email FROM Guest WHERE Username = '{username}'")
+    username = g.user['Username']
+    db.execute("SELECT FirstName, LastName, Phone, Email FROM Guest WHERE Username = %s", (username,))
     original = db.fetchone()
 
     if request.method == "POST":
@@ -122,11 +132,20 @@ def edit():
         err = verify_profile_info(firstname, lastname, phone, email)
 
         if err is None:
-            db.execute(f'''
-                        UPDATE Guest SET FirstName = "{firstname}",
-                        LastName = "{lastname}", Phone = "{phone}", Email = "{email}"
-                        WHERE Username = "{username}"
-                        ''')
+            query = '''
+                    UPDATE Guest SET FirstName = %(fn)s, LastName = %(ln)s, 
+                    Phone = %(ph)s, Email = %(em)s WHERE Username = %(user)s
+                    '''
+            
+            values = {
+                'fn': firstname,
+                'ln': lastname,
+                'ph': phone,
+                'em': email,
+                'user': username,
+            }
+     
+            db.execute(query, values)
             return redirect(url_for('booking.index'))
 
         flash(err)
