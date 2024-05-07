@@ -42,8 +42,8 @@ def create():
                            (roomNo,))
 
                 for dateRange in db:
-                    if (dateRange[0] > checkIn and dateRange[0] < checkOut) or (
-                        dateRange[1] > checkIn and dateRange[1] < checkOut):
+                    if (dateRange['CheckInDate'] > checkIn and dateRange['CheckInDate'] < checkOut) or (
+                        dateRange['CheckOutDate'] > checkIn and dateRange['CheckOutDate'] < checkOut):
                         err = "Time overlap with already booked bookings"
                         break
             
@@ -53,13 +53,13 @@ def create():
                     err = "Caterer ID invalid"
 
         if err is None:
-            db.execute("SELECT GuestID FROM Guest WHERE Username = %s", (g.user[0],))
-            guestId = db.fetchone()[0]
+            db.execute("SELECT GuestID FROM Guest WHERE Username = %s", (g.user['Username'],))
+            guestId = db.fetchone()['GuestID']
 
             db.execute("SELECT PricePerNight FROM Room NATURAL JOIN RoomType WHERE RoomNumber = %s", 
                        (roomNo,))
             dayAmount = checkOut - checkIn
-            price = dayAmount.days * db.fetchone()[0]
+            price = dayAmount.days * db.fetchone()['PricePerNight']
     
             query = '''
                     INSERT INTO Booking 
@@ -91,12 +91,12 @@ def get_booking(id):
 
     booking = db.fetchone()
 
-    db.execute("SELECT GuestID FROM Guest WHERE USERNAME = %s", (g.user[0],))
-    gid = db.fetchone()[0]
+    db.execute("SELECT GuestID FROM Guest WHERE Username = %s", (g.user['Username'],))
+    gid = db.fetchone()['GuestID']
 
     if booking is None:
         abort(404, "Booking does not exist")
-    elif booking[1] != gid:
+    elif booking['GuestID'] != gid:
         abort(403)
     
     return booking
@@ -132,14 +132,14 @@ def edit(id):
                 
                 values = {
                     'room': roomNo,
-                    'book': booking[0]
+                    'book': booking['BookingID']
                 }
 
                 db.execute(query, values)
 
                 for dateRange in db:
-                    if (dateRange[0] > checkIn and dateRange[0] < checkOut) or (
-                        dateRange[1] > checkIn and dateRange[1] < checkOut):
+                    if (dateRange['CheckInDate'] > checkIn and dateRange['CheckInDate'] < checkOut) or (
+                        dateRange['CheckOutDate'] > checkIn and dateRange['CheckOutDate'] < checkOut):
                         err = "Time overlap with already booked bookings"
                         break
 
@@ -166,7 +166,7 @@ def edit(id):
                 'cin': checkIn,
                 'cout': checkOut,
                 'price': price,
-                'bin': booking[0]
+                'bin': booking['BookingID']
             }
     
             db.execute(query, values)

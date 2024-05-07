@@ -71,12 +71,12 @@ def login():
             db.execute("SELECT Username, GuestPassword FROM Guest WHERE Username = %s", (username,))
             user = db.fetchone()
 
-            if not check_password_hash(user[1], password):
+            if not check_password_hash(user['GuestPassword'], password):
                 error = "Incorrect password"
 
         if error is None:
             session.clear()
-            session['u_id'] = user[0]
+            session['u_id'] = user['Username']
             return redirect(url_for('room'))
         
         flash(error)
@@ -117,7 +117,7 @@ def require_login(view):
 @require_login
 def edit():
     db = get_db()
-    username = g.user[0]
+    username = g.user['Username']
     db.execute("SELECT FirstName, LastName, Phone, Email FROM Guest WHERE Username = %s", (username,))
     original = db.fetchone()
 
