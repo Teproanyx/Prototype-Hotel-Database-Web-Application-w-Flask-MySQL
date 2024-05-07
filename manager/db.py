@@ -20,7 +20,7 @@ def get_db():
 
     g.db.autocommit = True
 
-    return g.db.cursor()
+    return g.db.cursor(dictionary=True)
 
 
 def close_db(e=None):

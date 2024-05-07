@@ -7,13 +7,13 @@
 {% block content %}
 <form method="post">
     <label for="firstname">First Name</label>
-    <input type="text" name="firstname" id="firstname" value="{{ orig[0] }}" required>
+    <input type="text" name="firstname" id="firstname" value="{{ orig['FirstName'] }}" required>
     <label for="lastname">Last Name</label>
-    <input type="text" name="lastname" id="lastname" value="{{ orig[1] }}" required>
+    <input type="text" name="lastname" id="lastname" value="{{ orig['LastName'] }}" required>
     <label for="phone">Phone Number</label>
-    <input type="tel" name="phone" id="phone" placeholder="0994445555" value="{{ orig[2] }}" required>
+    <input type="tel" name="phone" id="phone" placeholder="0994445555" value="{{ orig['Phone'] }}" required>
     <label for="email">Email</label>
-    <input type="email" name="email" id="email" placeholder="example@email.com" value="{{ orig[3] }}" required>
+    <input type="email" name="email" id="email" placeholder="example@email.com" value="{{ orig['Email'] }}" required>
     <input type="submit" value="Save">
 </form>
 {% endblock content %}
