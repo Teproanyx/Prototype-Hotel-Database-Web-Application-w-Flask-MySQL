@@ -17,6 +17,6 @@
     <input class="b_action" type="submit" value="Save">
 </form>
 <form action="{{ url_for('booking.cancel', id=original_booking['BookingID']) }}" method="post">
-    <input class="cancel" type="submit" value="Cancel" onclick="return confirm('Are you sure?');">
+    <input class="cancel" type="submit" value="delete" onclick="return confirm('Are you sure?');">
 </form>
 {% endblock content %}
