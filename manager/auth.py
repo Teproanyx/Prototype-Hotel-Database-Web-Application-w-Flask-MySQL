@@ -71,7 +71,9 @@ def login():
             db.execute("SELECT Username, GuestPassword FROM Guest WHERE Username = %s", (username,))
             user = db.fetchone()
 
-            if not check_password_hash(user['GuestPassword'], password):
+            if user is None:
+                error = "Incorrect username"
+            elif not check_password_hash(user['GuestPassword'], password):
                 error = "Incorrect password"
 
         if error is None:
