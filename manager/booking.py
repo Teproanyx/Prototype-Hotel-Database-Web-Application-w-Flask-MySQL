@@ -10,8 +10,9 @@ bp = Blueprint("booking", __name__, url_prefix="/booking")
 @bp.route('/index')
 def index():
     db = get_db()
-    db.execute('''SELECT BookingID, RoomNumber, CheckInDate, CheckOutDate, Username 
-               FROM Booking NATURAL JOIN Guest''')
+    db.execute('''SELECT BookingID, RoomNumber, CheckInDate, CheckOutDate, TeamName, 
+               TotalPrice, Username FROM (Booking NATURAL JOIN Guest)
+               LEFT JOIN Caterer on Booking.CatererID = Caterer.CatererID''')
     all_bookings = db.fetchall()
 
     return render_template('booking/index.html', bookings=all_bookings)
