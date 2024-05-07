@@ -18,25 +18,26 @@
         <th>Check Out</th>
         <th>Caterer Team</th>
         <th>Price</th>
+        <th>Edit?</th>
     </tr>
     {% for booking in bookings %}
     <tr>
         {% for data in booking.values() %}
-
-        {% if not loop.last %}
         <td>
+            {% if not loop.last %}
+
             {{ data }}
+
+            {% else %}
+
+            {% if data == g.user['Username'] %}
+
+            <a class="edit-link" href="{{ url_for('booking.edit', id=booking['BookingID']) }}">Edit</a>
+
+            {% endif %}
+
+            {% endif %}
         </td>
-        {% else %}
-
-        {% if data == g.user['Username'] %}
-        <td class="edit bt">
-            <a class="btn" href="{{ url_for('booking.edit', id=booking['BookingID']) }}">Edit</a>
-        </td>
-        {% endif %}
-
-        {% endif %}
-
         {% endfor %}
     </tr>
     {% endfor %}

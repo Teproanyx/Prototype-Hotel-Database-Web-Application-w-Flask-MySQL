@@ -104,6 +104,11 @@ nav {
   background-color: #ccc;
 }
 
+.edit-link {
+  text-decoration: none;
+  color: blue;
+}
+
 /* Features Section */
 .features {
   display: flex;
@@ -134,8 +139,6 @@ footer {
   text-align: center;
   padding: 1rem;
 }
-
-
 
 main {
   padding: 2rem;
