@@ -6,11 +6,10 @@
 
 {% block content %}
 <div class="br">
-{% if g.user %}
-<a class="btbr" href="{{ url_for('booking.create') }}">Book A Room Now</a>
-{% endif %}
+    {% if g.user %}
+    <a class="btbr" href="{{ url_for('booking.create') }}">Book A Room Now</a>
+    {% endif %}
 </div>
-
 <table>
     <tr>
         <th>Booking ID</th>
@@ -23,20 +22,21 @@
     {% for booking in bookings %}
     <tr>
         {% for data in booking.values() %}
-        
-            {% if not loop.last %}
-                <td>
-                    {{ data }}
-                </td>
-                {% else %}
-                {% if data == g.user['Username'] %}
-                <td class="edit bt">
-                <a class="btn" href="{{ url_for('booking.edit', id=booking['BookingID']) }}">Edit</a>
-                </td>
-                {% endif %}
 
-            {% endif %}
-        
+        {% if not loop.last %}
+        <td>
+            {{ data }}
+        </td>
+        {% else %}
+
+        {% if data == g.user['Username'] %}
+        <td class="edit bt">
+            <a class="btn" href="{{ url_for('booking.edit', id=booking['BookingID']) }}">Edit</a>
+        </td>
+        {% endif %}
+
+        {% endif %}
+
         {% endfor %}
     </tr>
     {% endfor %}

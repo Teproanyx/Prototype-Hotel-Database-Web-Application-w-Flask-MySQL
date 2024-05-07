@@ -86,22 +86,23 @@ nav {
   background-color: #ddd;
 }
 
-.br{
+.br {
   background-color: white;
   padding: 2rem;
 }
-.btbr{
+
+.btbr {
   background-color: #ddd;
   color: #333;
   padding: 1rem 1rem;
   margin-bottom: 2rem;
   border-radius: 15px;
   transition: background-color 0.3s ease;
-  
 }
- .btbr:hover{
+
+.btbr:hover {
   background-color: #ccc;
- }
+}
 
 /* Features Section */
 .features {
@@ -158,9 +159,6 @@ td {
   border-bottom: 1px solid #ddd;
 
 }
-.edit bt{
-
-}
 
 th {
   background-color: #f2f2f2;
@@ -199,4 +197,8 @@ button[type="submit"] {
 
 button[type="submit"]:hover {
   background-color: #555;
+}
+
+button[type="submit"].cancel {
+  background-color: red;
 }

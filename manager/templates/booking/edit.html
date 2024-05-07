@@ -6,17 +6,33 @@
 
 {% block content %}
 <form method="post">
-    <label for="roomNo">Room Number</label>
-    <input type="number" name="roomNo" id="roomNo" value="{{ original_booking['RoomNumber'] }}" required autofocus>
-    <label for="checkIn">Check In Date</label>
-    <input type="date" name="checkIn" id="checkIn" value="{{ original_booking['CheckInDate'] }}" required>
-    <label for="checkOut">Check Out Date</label>
-    <input type="date" name="checkOut" id="checkOut" value="{{ original_booking['CheckOutDate'] }}" required>
-    <label for="caterer">Caterer Team ID</label>
-    <input type="number" name="caterer" id="caterer" value="{{ original_booking['CatererID'] }}">
-    <input class="b_action" type="submit" value="Save">
+    <div class="form-group">
+        <label for="roomNo">Room Number</label>
+        <input type="number" name="roomNo" id="roomNo" value="{{ original_booking['RoomNumber'] }}" required autofocus>
+    </div>
+    <div class="form-group">
+        <label for="checkIn">Check In Date</label>
+        <input type="date" name="checkIn" id="checkIn" value="{{ original_booking['CheckInDate'] }}" required>
+    </div>
+    <div class="form-group">
+        <label for="checkOut">Check Out Date</label>
+        <input type="date" name="checkOut" id="checkOut" value="{{ original_booking['CheckOutDate'] }}" required>
+    </div>
+    <div class="form-group">
+        <label for="caterer">Caterer Team ID</label>
+        <input type="number" name="caterer" id="caterer" value="{{ original_booking['CatererID'] }}">
+    </div>
+    <button type="submit">Save edit</button>
 </form>
+
+<br>
+
 <form action="{{ url_for('booking.cancel', id=original_booking['BookingID']) }}" method="post">
-    <input class="cancel" type="submit" value="delete" onclick="return confirm('Are you sure?');">
+    <button type="submit" class="cancel" onclick="return confirm('Are you sure?');">Cancel booking!?</button>
 </form>
+
+<br>
+
+<a class="btbr" href="{{ url_for('booking.index') }}">Cancel edit</a>
+
 {% endblock content %}
