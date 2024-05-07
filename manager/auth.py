@@ -77,7 +77,7 @@ def login():
         if error is None:
             session.clear()
             session['u_id'] = user['Username']
-            return redirect(url_for('room'))
+            return redirect(url_for('viewing.room'))
         
         flash(error)
 
@@ -99,7 +99,7 @@ def cached_login_user():
 @bp.route('/logout')
 def logout():
     session.clear()
-    return redirect(url_for('room'))
+    return redirect(url_for('viewing.room'))
 
 
 def require_login(view):
