@@ -6,14 +6,23 @@
 
 {% block content %}
 <form method="post">
-    <label for="firstname">First Name</label>
-    <input type="text" name="firstname" id="firstname" value="{{ orig['FirstName'] }}" required>
-    <label for="lastname">Last Name</label>
-    <input type="text" name="lastname" id="lastname" value="{{ orig['LastName'] }}" required>
-    <label for="phone">Phone Number</label>
-    <input type="tel" name="phone" id="phone" placeholder="0994445555" value="{{ orig['Phone'] }}" required>
-    <label for="email">Email</label>
-    <input type="email" name="email" id="email" placeholder="example@email.com" value="{{ orig['Email'] }}" required>
+    <div class="form-group">
+        <label for="firstname">First Name</label>
+        <input type="text" name="firstname" id="firstname" value="{{ orig['FirstName'] }}" required>
+    </div>
+    <div class="form-group">
+        <label for="lastname">Last Name</label>
+        <input type="text" name="lastname" id="lastname" value="{{ orig['LastName'] }}" required>
+    </div>
+    <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input type="tel" name="phone" id="phone" placeholder="0994445555" value="{{ orig['Phone'] }}" required>
+    </div>
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" name="email" id="email" placeholder="example@email.com" value="{{ orig['Email'] }}"
+            required>
+    </div>
     <input type="submit" value="Save">
 </form>
 {% endblock content %}
