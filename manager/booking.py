@@ -152,7 +152,7 @@ def edit(id):
             db.execute("SELECT PricePerNight FROM Room NATURAL JOIN RoomType WHERE RoomNumber = %s", 
                        (roomNo,))
             dayAmount = checkOut - checkIn
-            price = dayAmount.days() * db.fetchone()[0]
+            price = dayAmount.days * db.fetchone()['PricePerNight']
 
             query = '''
                     UPDATE Booking SET RoomNumber = %(room)s, CatererID = %(cid)s,
