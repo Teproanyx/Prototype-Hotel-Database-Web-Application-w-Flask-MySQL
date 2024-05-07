@@ -6,14 +6,22 @@
 
 {% block content %}
 <form method="post">
-    <label for="roomNo">Room Number</label>
-    <input type="number" name="roomNo" id="roomNo" required autofocus>
-    <label for="checkIn">Check In Date</label>
-    <input type="date" name="checkIn" id="checkIn" required>
-    <label for="checkOut">Check Out Date</label>
-    <input type="date" name="checkOut" id="checkOut" required>
-    <label for="caterer">Caterer Team ID</label>
-    <input type="number" name="caterer" id="caterer">
-    <input class="b_action" type="submit" value="Book">
+    <div class="form-group">
+        <label for="roomNo">Room Number</label>
+        <input type="number" name="roomNo" id="roomNo" required autofocus>
+    </div>
+    <div class="form-group">
+        <label for="checkIn">Check In Date</label>
+        <input type="date" name="checkIn" id="checkIn" required>
+    </div>
+    <div class="form-group">
+        <label for="checkOut">Check Out Date</label>
+        <input type="date" name="checkOut" id="checkOut" required>
+    </div>
+    <div class="form-group">
+        <label for="caterer">Caterer Team ID</label>
+        <input type="number" name="caterer" id="caterer">
+    </div>
+    <button type="submit">Book</button>
 </form>
 {% endblock content %}
