@@ -28,6 +28,7 @@
             {{ data }}
         </td>
         {% else %}
+
         {% if data == g.user['Username'] %}
         <td class="edit bt">
             <a class="btn" href="{{ url_for('booking.edit', id=booking['BookingID']) }}">Edit</a>
