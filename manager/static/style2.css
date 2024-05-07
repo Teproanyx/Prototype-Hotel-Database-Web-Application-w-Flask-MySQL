@@ -98,7 +98,6 @@ nav {
   margin-bottom: 2rem;
   border-radius: 15px;
   transition: background-color 0.3s ease;
-
 }
 
 .btbr:hover {
@@ -198,4 +197,8 @@ button[type="submit"] {
 
 button[type="submit"]:hover {
   background-color: #555;
+}
+
+button[type="submit"].cancel {
+  background-color: red;
 }

@@ -24,8 +24,15 @@
     </div>
     <button type="submit">Save edit</button>
 </form>
-<a class="btn" href="{{ url_for('booking.index') }}">Cancel edit</a>
+
+<br>
+
 <form action="{{ url_for('booking.cancel', id=original_booking['BookingID']) }}" method="post">
     <button type="submit" class="cancel" onclick="return confirm('Are you sure?');">Cancel booking!?</button>
 </form>
+
+<br>
+
+<a class="btbr" href="{{ url_for('booking.index') }}">Cancel edit</a>
+
 {% endblock content %}
