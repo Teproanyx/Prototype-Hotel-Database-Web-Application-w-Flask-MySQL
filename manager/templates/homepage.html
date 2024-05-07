@@ -3,13 +3,15 @@
 {% block header %}{% endblock header %}
 
 {% block content %}
-<section class="hero">
-    <div class="hero-content">
-        <h1>Welcome to Our Hotel</h1>
-        <p>Book your stay and experience luxury.</p>
-        <a href="{{ url_for('booking.index') }}" class="btn">Book Now</a>
-    </div>
-</section>
+<div class="background">
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Welcome to Our Hotel</h1>
+            <p>Book your stay and experience luxury.</p>
+            <a href="{{ url_for('booking.index') }}" class="btn">Book Now</a>
+        </div>
+    </section>
+</div>
 
 <section class="features">
     <div class="feature">
